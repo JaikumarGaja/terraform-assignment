@@ -1,0 +1,23 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile-backend  
+    env_file:
+      - ./backend/.env
+    ports:
+      - "5000:5000"
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile-frontend  
+    env_file:
+      - ./frontend/.env
+    ports:
+      - "4000:4000"
+    depends_on:
+      - backend
+    environment:
+      - BACKEND_URL=http://backend:5000

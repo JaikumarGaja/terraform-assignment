@@ -4,7 +4,7 @@ apt-get install -y python3-pip python3-venv nodejs npm git
 npm install -g pm2
 
 # Clone your code
-git clone https://github.com/JaikumarGaja/aws-assignment /home/ubuntu/app
+git clone https://github.com/JaikumarGaja/terraform-assignment /home/ubuntu/app
 
 # Auto-fetch Public IP and set frontend environment variable
 TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")

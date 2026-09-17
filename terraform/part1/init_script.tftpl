@@ -1,0 +1,25 @@
+#!/bin/bash
+# 1. Install Docker and Docker Compose
+apt-get update -y
+apt-get install -y docker.io docker-compose git
+
+# Start Docker service
+systemctl start docker
+systemctl enable docker
+
+# 2. Clone your code
+git clone https://github.com/YOUR_USERNAME/terraform-assignment.git /home/ubuntu/app
+cd /home/ubuntu/app
+
+# 3. Auto-fetch Public IP from AWS
+TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+PUBLIC_IP=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" -s http://169.254.169.254/latest/meta-data/public-ipv4)
+
+# 4. Generate the missing frontend .env file
+echo "BACKEND_URL=http://$PUBLIC_IP:5000" > /home/ubuntu/app/frontend/.env
+
+# 5. Generate the missing backend .env file (Insert your real Mongo URI here)
+echo "MONGO_URI=${mongo_uri_secret}" > /home/ubuntu/app/backend/.env
+
+# 6. Build and launch the containers
+docker-compose up -d --build

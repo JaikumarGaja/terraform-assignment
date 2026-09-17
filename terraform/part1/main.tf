@@ -1,3 +1,9 @@
+variable "mongo_uri" {
+  description = "MongoDB Connection String"
+  type        = string
+  sensitive   = true
+}
+
 provider "aws" {
   region = "ap-south-1"
 }
@@ -56,7 +62,9 @@ resource "aws_instance" "app_server" {
   # Tell AWS to inject your public key into the server
   key_name = "aws-assignment-key"
 
-  user_data = file("init_script.sh")
+  user_data = templatefile("init_script.tftpl", {
+  mongo_uri_secret = var.mongo_uri
+})
 
   tags = {
     Name = "Part1-Single-EC2"

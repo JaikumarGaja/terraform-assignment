@@ -17,6 +17,7 @@ PUBLIC_IP=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" -s http://169.254.169.254
 
 # 4. Generate the missing frontend .env file
 echo "BACKEND_URL=http://$PUBLIC_IP:5000" > /home/ubuntu/app/frontend/.env
+echo "It is working fine" > /home/ubuntu/app/frontend/.env
 
 # 5. Generate the missing backend .env file (Insert your real Mongo URI here)
 echo "MONGO_URI=${mongo_uri_secret}" > /home/ubuntu/app/backend/.env

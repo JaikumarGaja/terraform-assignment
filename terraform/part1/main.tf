@@ -11,7 +11,7 @@ provider "aws" {
 # 1. Open the necessary ports
 resource "aws_security_group" "web_sg" {
   name        = "flask_express_sg"
-  description = "Allow SSH, Express (3000), and Flask (5000)"
+  description = "Allow SSH, Express (4000), and Flask (5000)"
 
   ingress {
     from_port   = 22

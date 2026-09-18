@@ -1,0 +1,17 @@
+#!/bin/bash
+apt-get update -y
+apt-get install -y docker.io git
+
+systemctl start docker
+systemctl enable docker
+
+# Clone the repo and navigate directly to the frontend folder
+git clone https://github.com/JaikumarGaja/terraform-assignment /home/ubuntu/app
+cd /home/ubuntu/app/frontend
+
+# Create the .env file using the Backend's PRIVATE IP
+echo "BACKEND_URL=http://${backend_ip}:5000" > .env
+
+# Build and run ONLY the frontend container (Assuming port 4000 based on your SG)
+docker build -t express-frontend -f Dockerfile-frontend .
+docker run -d -p 4000:4000 --env-file .env --name frontend-container express-frontend

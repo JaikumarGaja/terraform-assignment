@@ -1,0 +1,17 @@
+#!/bin/bash
+apt-get update -y
+apt-get install -y docker.io git
+
+systemctl start docker
+systemctl enable docker
+
+# Clone the repo and navigate directly to the backend folder
+git clone https://github.com/JaikumarGaja/terraform-assignment /home/ubuntu/app
+cd /home/ubuntu/app/backend
+
+# Create the .env file securely
+echo "MONGO_URI=${mongo_uri_secret}" > .env
+
+# Build and run ONLY the backend container
+docker build -t flask-backend -f Dockerfile-backend .
+docker run -d -p 5000:5000 --env-file .env --name backend-container flask-backend
